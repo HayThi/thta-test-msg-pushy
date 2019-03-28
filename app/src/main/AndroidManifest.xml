@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.thta.develop.pushyapp">
+
+    <!-- Pushy Permissions -->
+    <!-- The device will be able to connect to our service. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- The devices won't disconnect their Wi-Fi connection during sleep. -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- The SDK will be able to check for an active internet connection. -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- The device will reconnect to our network after they finish booting up. -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- The SDK will be able to persist device tokens in the external storage. -->
+    <!-- It is necessary only for persisting device tokens in the external storage
+    for when your app is reinstaled, so we don't change you twice for the same device. -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- If you would like the notification to vibrate the device. -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+
+        <!-- Pushy Socket Service -->
+        <!-- Do not modify - internal service.
+             The device will be able to establish an idle background connection with our service.-->
+        <service android:name="me.pushy.sdk.services.PushySocketService" />
+
+        <!-- Pushy Job Service (added in Pushy SDK 1.0.35) -->
+        <!-- Do not modify - internal service
+             The device running Android Oreo and up will be able to establish an idle
+             background connection with our service. -->
+        <service android:name="me.pushy.sdk.services.PushyJobService"
+            android:permission="android:permission.BIND_JOB_SERVICE"
+            android:exported="true" />
+
+        <!-- Pushy Notification Receiver. -->
+        <!-- Incoming push notifications will invoke the following BroadcastReceiver. -->
+        <receiver android:name=".receivers.PushReceiver" android:exported="false">
+            <intent-filter>
+                <!-- Do not modify this -->
+                <action android:name="pushy.me" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Pushy Update Receiver -->
+        <!-- Do not modify - internal BroadcastReceiver that restarts the listener service.
+             The device will reconnect to our network when your app gets updated.-->
+        <receiver android:name="me.pushy.sdk.receivers.PushyUpdateReceiver" android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Pushy Boot Receiver -->
+        <!-- Do not modify - internal BroadcastReceiver that restarts the listener service.
+             The device will reconnect to our network when they boot up.-->
+        <receiver android:name="me.pushy.sdk.receivers.PushyBootReceiver" android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+    </application>
+
+</manifest>
